@@ -204,4 +204,13 @@
   .admin-stat-slate {
     background-color: var(--admin-slate-soft);
   }
+
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
 }

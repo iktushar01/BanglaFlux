@@ -14,7 +14,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Menu, LogOut, User, Loader2 } from "lucide-react";
+import { Menu, LogOut, User, Loader2, Heart } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -89,6 +89,15 @@ const Navbar = () => {
       <div className="container mx-auto flex h-14 items-center justify-between px-4 max-w-6xl">
         <Logo />
 
+        <div className="hidden items-center gap-1 md:flex">
+          <Button variant="ghost" size="sm" asChild className="text-zinc-300">
+            <Link href="/favorites">
+              <Heart className="mr-1.5 h-4 w-4" />
+              Favorites
+            </Link>
+          </Button>
+        </div>
+
         <div className="flex items-center gap-2">
           <ModeToggle />
 
@@ -126,6 +135,15 @@ const Navbar = () => {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    className="cursor-pointer gap-2 rounded-lg py-1.5"
+                    asChild
+                  >
+                    <Link href="/favorites">
+                      <Heart className="h-4 w-4 text-muted-foreground" />
+                      <span>Favorites</span>
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem
                     className="cursor-pointer gap-2 rounded-lg py-1.5"
                     asChild

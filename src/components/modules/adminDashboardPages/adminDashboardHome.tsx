@@ -7,17 +7,33 @@ import {
   LayoutDashboard,
   Loader2,
   Settings,
-  ShieldCheck,
+  Tv,
+  Upload,
   UserCog,
 } from "lucide-react";
 
 import { getCurrentUserAction } from "@/actions/_getCurrentUserAction";
+import { useAdminStats } from "@/hooks/useChannels";
 import { APP_NAME } from "@/lib/app-config";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const quickLinks = [
+  {
+    title: "Upload Playlist",
+    description: "Import M3U file or URL.",
+    href: "/admin/playlists",
+    icon: Upload,
+    roles: ["ADMIN", "SUPER_ADMIN"] as const,
+  },
+  {
+    title: "Manage Channels",
+    description: "Edit, toggle, or delete channels.",
+    href: "/admin/channels",
+    icon: Tv,
+    roles: ["ADMIN", "SUPER_ADMIN"] as const,
+  },
   {
     title: "Admin Management",
     description: "Create and manage admin accounts.",
@@ -32,13 +48,6 @@ const quickLinks = [
     icon: Settings,
     roles: ["ADMIN", "SUPER_ADMIN"] as const,
   },
-  {
-    title: "Profile",
-    description: "View and edit your account details.",
-    href: "/profile",
-    icon: ShieldCheck,
-    roles: ["ADMIN", "SUPER_ADMIN"] as const,
-  },
 ];
 
 const AdminDashboardHome = () => {
@@ -46,6 +55,8 @@ const AdminDashboardHome = () => {
     queryKey: ["currentUser"],
     queryFn: getCurrentUserAction,
   });
+
+  const { data: stats, isLoading: statsLoading } = useAdminStats();
 
   const user = data?.data;
 
@@ -78,7 +89,7 @@ const AdminDashboardHome = () => {
   }
 
   const visibleLinks = quickLinks.filter((link) =>
-    link.roles.includes(user.role as "ADMIN" | "SUPER_ADMIN"),
+    (link.roles as readonly string[]).includes(user.role),
   );
 
   return (
@@ -96,10 +107,59 @@ const AdminDashboardHome = () => {
             Welcome back, {user.name}
           </h1>
           <p className="mt-2 max-w-2xl text-muted-foreground">
-            This is the default admin home for {APP_NAME}. Replace this page with
-            project-specific metrics, tables, and workflows when you start a new app.
+            Manage {APP_NAME} IPTV channels, playlists, and streaming content.
           </p>
         </div>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {statsLoading ? (
+          Array.from({ length: 4 }).map((_, i) => (
+            <Card key={i}>
+              <CardHeader className="pb-2">
+                <div className="h-4 w-24 animate-pulse rounded bg-muted" />
+              </CardHeader>
+              <CardContent>
+                <div className="h-8 w-16 animate-pulse rounded bg-muted" />
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardDescription>Total Channels</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-bold">{stats?.total ?? 0}</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardDescription>Active</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-bold text-green-500">{stats?.active ?? 0}</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardDescription>Inactive</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-bold text-muted-foreground">{stats?.inactive ?? 0}</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardDescription>Playlists</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-bold">{stats?.playlists ?? 0}</p>
+              </CardContent>
+            </Card>
+          </>
+        )}
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">

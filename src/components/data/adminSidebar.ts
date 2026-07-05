@@ -12,16 +12,16 @@ export const adminSidebar: SidebarData = {
     {
       title: "Overview",
       items: [
-        { label: "Dashboard",      icon: "LayoutDashboard", href: "/admin/dashboard" },
+        { label: "Dashboard", icon: "LayoutDashboard", href: "/admin/dashboard" },
       ],
     },
-    // {
-    //   title: "Management",
-    //   items: [
-    //     { label: "Users",               icon: "Users",       href: "/dashboard/admin/users" },
-    //     { label: "Roles & Permissions", icon: "ShieldCheck", href: "/dashboard/admin/roles" },
-    //   ],
-    // },
+    {
+      title: "IPTV",
+      items: [
+        { label: "Upload Playlist", icon: "Upload", href: "/admin/playlists" },
+        { label: "Manage Channels", icon: "Tv", href: "/admin/channels" },
+      ],
+    },
     {
       title: "System",
       items: [

@@ -12,18 +12,18 @@ export type RouteConfig = {
 }
 
 export const commonProtectedRoutes : RouteConfig = {
-    exact : ["/my-profile", "/change-password"],
+    exact : ["/my-profile", "/change-password", "/profile"],
     pattern : []
 }
 
 
 export const adminProtectedRoutes : RouteConfig = {
-    pattern: [/^\/admin(\/|$)/ ], // Matches admin area routes by default
+    pattern: [/^\/admin(\/|$)/ ],
     exact : []
 }
 
 export const clientProtectedRoutes : RouteConfig = {
-    pattern: [/^\/dashboard/ ], // Matches any path that starts with /dashboard
+    pattern: [/^\/dashboard/, /^\/favorites/ ],
     exact : [ "/payment/success"]
 };
 
