@@ -1,0 +1,207 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-heading: var(--font-sans);
+
+  /* Vibrant, premium SaaS branding color tokens */
+  --color-brand-yellow: oklch(0.86 0.15 86);
+  --color-admin-accent: var(--admin-accent);
+  --color-admin-accent-strong: var(--admin-accent-strong);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  /* System Fonts - Clean, High-End SaaS Stack */
+  --font-sans: "Geist Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Geist Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Light Mode - Warm Zinc Slate Matrix */
+  --background: oklch(0.99 0.003 240);
+  --foreground: oklch(0.12 0.01 240);
+  
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.12 0.01 240);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.12 0.01 240);
+
+  /* Primary Deep Dark Slate Contrast */
+  --primary: oklch(0.12 0.01 240); 
+  --primary-foreground: oklch(0.99 0.003 240); 
+
+  --secondary: oklch(0.94 0.005 240);
+  --secondary-foreground: oklch(0.12 0.01 240);
+  --muted: oklch(0.95 0.005 240);
+  --muted-foreground: oklch(0.52 0.015 240);
+  --accent: oklch(0.93 0.008 240);
+  --accent-foreground: oklch(0.12 0.01 240);
+  --destructive: oklch(0.58 0.22 24);
+  --border: oklch(0.91 0.005 240);
+  --input: oklch(0.91 0.005 240);
+  --ring: oklch(0.12 0.01 240 / 12%);
+
+  /* Sidebar Light UI Components */
+  --sidebar: oklch(0.98 0.004 240);
+  --sidebar-foreground: oklch(0.20 0.01 240);
+  --sidebar-primary: oklch(0.12 0.01 240);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.93 0.008 240);
+  --sidebar-accent-foreground: oklch(0.12 0.01 240);
+  --sidebar-border: oklch(0.91 0.005 240);
+  --sidebar-ring: oklch(0.12 0.01 240 / 12%);
+
+  /* SaaS Dashboard Context Accents */
+  --admin-accent: oklch(0.82 0.14 85);
+  --admin-accent-strong: oklch(0.64 0.15 76);
+  --admin-accent-soft: oklch(0.97 0.04 90);
+  --admin-emerald-soft: oklch(0.96 0.04 150);
+  --admin-sky-soft: oklch(0.95 0.03 220);
+  --admin-slate-soft: oklch(0.94 0.01 240);
+
+  --radius: 0.5rem;
+
+  --chart-1: oklch(0.62 0.18 220);
+  --chart-2: oklch(0.64 0.17 150);
+  --chart-3: oklch(0.72 0.16 80);
+  --chart-4: oklch(0.52 0.18 310);
+  --chart-5: oklch(0.58 0.22 24);
+}
+
+.dark {
+  /* Dark Mode - Obsidian Pure Depth */
+  --background: oklch(0.08 0.005 240);
+  --foreground: oklch(0.97 0.003 240);
+  
+  --card: oklch(0.11 0.005 240);
+  --card-foreground: oklch(0.97 0.003 240);
+  --popover: oklch(0.11 0.005 240);
+  --popover-foreground: oklch(0.97 0.003 240);
+
+  /* High contrast light primary */
+  --primary: oklch(0.97 0.003 240); 
+  --primary-foreground: oklch(0.08 0.005 240);
+
+  --secondary: oklch(0.15 0.007 240);
+  --secondary-foreground: oklch(0.97 0.003 240);
+  --muted: oklch(0.14 0.006 240);
+  --muted-foreground: oklch(0.58 0.01 240);
+  --accent: oklch(0.16 0.008 240);
+  --accent-foreground: oklch(0.97 0.003 240);
+  --destructive: oklch(0.48 0.18 24);
+  --border: oklch(0.16 0.008 240);
+  --input: oklch(0.16 0.008 240);
+  --ring: oklch(0.97 0.003 240 / 20%);
+
+  /* Sidebar Dark UI Components */
+  --sidebar: oklch(0.10 0.005 240);
+  --sidebar-foreground: oklch(0.88 0.005 240);
+  --sidebar-primary: oklch(0.97 0.003 240);
+  --sidebar-primary-foreground: oklch(0.08 0.005 240);
+  --sidebar-accent: oklch(0.15 0.007 240);
+  --sidebar-accent-foreground: oklch(0.97 0.003 240);
+  --sidebar-border: oklch(0.14 0.006 240);
+  --sidebar-ring: oklch(0.97 0.003 240 / 20%);
+
+  /* Dark Dashboard Context Accents */
+  --admin-accent: oklch(0.84 0.12 88);
+  --admin-accent-strong: oklch(0.76 0.13 82);
+  --admin-accent-soft: oklch(0.16 0.02 85);
+  --admin-emerald-soft: oklch(0.15 0.02 150);
+  --admin-sky-soft: oklch(0.14 0.02 220);
+  --admin-slate-soft: oklch(0.14 0.005 240);
+
+  --chart-1: oklch(0.68 0.16 220);
+  --chart-2: oklch(0.72 0.14 150);
+  --chart-3: oklch(0.82 0.13 85);
+  --chart-4: oklch(0.64 0.17 310);
+  --chart-5: oklch(0.54 0.20 24);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/40;
+  }
+  body {
+    @apply antialiased bg-background text-foreground tracking-tight selection:bg-primary/10;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+@layer utilities {
+  .admin-shell {
+    background:
+      radial-gradient(circle at top right, color-mix(in oklab, var(--admin-accent) 8%, transparent), transparent 45%),
+      radial-gradient(circle at bottom left, color-mix(in oklab, var(--admin-accent-strong) 5%, transparent), transparent 35%),
+      var(--background);
+  }
+
+  .admin-panel {
+    @apply rounded-xl border border-border/60 bg-card/80 shadow-[0_1px_3px_rgba(0,0,0,0.02)] backdrop-blur-md;
+  }
+
+  .admin-section-label {
+    color: var(--admin-accent-strong);
+    @apply text-[11px] font-semibold tracking-wider uppercase;
+  }
+
+  .admin-stat-warm {
+    background-color: var(--admin-accent-soft);
+  }
+
+  .admin-stat-emerald {
+    background-color: var(--admin-emerald-soft);
+  }
+
+  .admin-stat-sky {
+    background-color: var(--admin-sky-soft);
+  }
+
+  .admin-stat-slate {
+    background-color: var(--admin-slate-soft);
+  }
+}
