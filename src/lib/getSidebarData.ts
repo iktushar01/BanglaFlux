@@ -10,6 +10,6 @@ export const getSidebarData = async (role: UserRole): Promise<SidebarData> => {
       return adminSidebar;
     case "CLIENT":
     default:
-      return await getClientSidebarData([]);
+      return await getClientSidebarData();
   }
 };

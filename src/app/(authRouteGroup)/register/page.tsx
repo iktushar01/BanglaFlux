@@ -4,6 +4,7 @@ export const maxDuration = 60; // Allow 60s for ImgBB upload
 
 /**
  * Auth register page
+ */
 const RegisterPage = async () => {
 
   return (

@@ -1,9 +1,5 @@
-import Home from "@/components/modules/HomePage/Home";
+import IptvHome from "@/components/modules/iptv/IptvHome";
 
 export default function HomePage() {
-    return (
-        <div>
-            <Home />
-        </div>
-    );
+  return <IptvHome />;
 }
