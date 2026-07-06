@@ -90,7 +90,7 @@ const Navbar = () => {
         <Logo />
 
         <div className="hidden items-center gap-1 md:flex">
-          <Button variant="ghost" size="sm" asChild className="text-zinc-300">
+          <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-foreground">
             <Link href="/favorites">
               <Heart className="mr-1.5 h-4 w-4" />
               Favorites

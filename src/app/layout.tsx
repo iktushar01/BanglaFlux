@@ -6,7 +6,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 // @ts-ignore: side-effect CSS import
 import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "@/providers/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

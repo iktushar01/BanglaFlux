@@ -204,8 +204,8 @@ export function HlsPlayer({ url, title, className }: HlsPlayerProps) {
 
       {loading && !error && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/80">
-          <Loader2 className="h-10 w-10 animate-spin text-red-500" />
-          <p className="text-sm text-zinc-400">Loading stream...</p>
+          <Loader2 className="h-10 w-10 animate-spin text-brand" />
+          <p className="text-sm text-zinc-300">Loading stream...</p>
         </div>
       )}
 

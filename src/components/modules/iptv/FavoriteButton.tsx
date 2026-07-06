@@ -40,8 +40,7 @@ export function FavoriteButton({ channelId, className }: FavoriteButtonProps) {
       onClick={handleClick}
       disabled={isPending}
       className={cn(
-        "border-zinc-700 bg-zinc-900/80 hover:bg-zinc-800",
-        isFavorited && "border-red-600 text-red-500",
+        isFavorited && "border-brand text-brand hover:bg-brand/10",
         className,
       )}
       aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}

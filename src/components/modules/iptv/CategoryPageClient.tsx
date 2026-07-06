@@ -29,10 +29,10 @@ function CategoryPageContent({ slug }: CategoryPageContentProps) {
   if (!category) notFound();
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] pb-16">
-      <div className="border-b border-zinc-900 bg-[#0a0a0a] px-4 py-6 md:px-8">
+    <div className="min-h-screen bg-background pb-16">
+      <div className="border-b border-border bg-background px-4 py-6 md:px-8">
         <div className="mx-auto max-w-7xl space-y-4">
-          <h1 className="text-3xl font-bold text-white">
+          <h1 className="text-3xl font-bold text-foreground">
             {CATEGORY_LABELS[category]}
           </h1>
           <div className="flex flex-col gap-4 md:flex-row md:items-center">
@@ -48,7 +48,7 @@ function CategoryPageContent({ slug }: CategoryPageContentProps) {
 
       <div className="mx-auto max-w-7xl px-4 pt-8 md:px-8">
         {isError ? (
-          <div className="rounded-lg border border-red-900/50 bg-red-950/20 p-8 text-center text-red-300">
+          <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-8 text-center text-destructive">
             Could not load channels. Make sure the backend server is running on port 5000.
           </div>
         ) : (
@@ -63,7 +63,7 @@ export function CategoryPageClient({ slug }: CategoryPageContentProps) {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#0a0a0a] p-8">
+        <div className="min-h-screen bg-background p-8">
           <Skeleton className="mb-4 h-10 w-48" />
           <Skeleton className="h-64 w-full" />
         </div>

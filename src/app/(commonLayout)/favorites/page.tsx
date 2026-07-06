@@ -12,19 +12,19 @@ export default function FavoritesPage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center bg-[#0a0a0a]">
-        <Loader2 className="h-8 w-8 animate-spin text-red-500" />
+      <div className="flex min-h-[50vh] items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-brand" />
       </div>
     );
   }
 
   if (isError) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center bg-[#0a0a0a] p-4">
-        <Card className="max-w-md border-zinc-800 bg-zinc-950">
+      <div className="flex min-h-[50vh] items-center justify-center bg-background p-4">
+        <Card className="max-w-md">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Heart className="h-5 w-5" />
+              <Heart className="h-5 w-5 text-brand" />
               Sign in required
             </CardTitle>
             <CardDescription>
@@ -32,7 +32,7 @@ export default function FavoritesPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button asChild className="w-full bg-red-600 hover:bg-red-700">
+            <Button asChild variant="brand" className="w-full">
               <Link href="/login?redirect=/favorites">Sign in</Link>
             </Button>
           </CardContent>
@@ -42,14 +42,14 @@ export default function FavoritesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] pb-16">
-      <div className="border-b border-zinc-900 px-4 py-8 md:px-8">
+    <div className="min-h-screen bg-background pb-16">
+      <div className="border-b border-border px-4 py-8 md:px-8">
         <div className="mx-auto max-w-7xl">
-          <h1 className="flex items-center gap-2 text-3xl font-bold text-white">
-            <Heart className="h-8 w-8 text-red-500" />
+          <h1 className="flex items-center gap-2 text-3xl font-bold text-foreground">
+            <Heart className="h-8 w-8 text-brand" />
             My Favorites
           </h1>
-          <p className="mt-2 text-zinc-400">
+          <p className="mt-2 text-muted-foreground">
             {favorites?.length ?? 0} saved channel{(favorites?.length ?? 0) !== 1 ? "s" : ""}
           </p>
         </div>
