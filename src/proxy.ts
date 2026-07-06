@@ -68,6 +68,8 @@ const resolveAuthState = async (
         ReturnType<typeof verifyAccessToken>
     >["data"];
     let refreshResponse: NextResponse | null = null;
+    let backendSession: Awaited<ReturnType<typeof validateSessionFromBackend>> | null =
+        null;
 
     const evaluateAccessToken = async (token: string | undefined) => {
         if (!token || !accessTokenSecret) {
@@ -88,12 +90,23 @@ const resolveAuthState = async (
             (activeAccessToken && isTokenExpiringSoon(activeAccessToken)));
 
     if (shouldAttemptRefresh) {
-        const refreshedTokens = await refreshTokensFromRequest(request);
+        const refreshResult = await refreshTokensFromRequest(request);
 
-        if (refreshedTokens) {
-            activeAccessToken = refreshedTokens.accessToken;
+        if (refreshResult.status === "unauthorized") {
             refreshResponse = NextResponse.next();
-            applyAuthCookies(refreshResponse, refreshedTokens);
+            clearAuthCookiesOnResponse(refreshResponse);
+            return {
+                activeAccessToken: undefined,
+                isValidAccessToken: false,
+                userRole: null,
+                refreshResponse,
+            };
+        }
+
+        if (refreshResult.status === "refreshed") {
+            activeAccessToken = refreshResult.tokens.accessToken;
+            refreshResponse = NextResponse.next();
+            applyAuthCookies(refreshResponse, refreshResult.tokens);
 
             tokenResult = await evaluateAccessToken(activeAccessToken);
             isValidAccessToken = tokenResult.success;
@@ -101,10 +114,7 @@ const resolveAuthState = async (
         }
     }
 
-    let backendSession: Awaited<ReturnType<typeof validateSessionFromBackend>> | null =
-        null;
-
-    if (!isValidAccessToken && activeAccessToken) {
+    if (activeAccessToken) {
         backendSession = await validateSessionFromBackend(
             request,
             activeAccessToken,
@@ -112,23 +122,26 @@ const resolveAuthState = async (
 
         if (backendSession.valid) {
             isValidAccessToken = true;
-            decodedAccessToken = decodeJwtPayload(activeAccessToken);
+            decodedAccessToken =
+                decodedAccessToken ?? decodeJwtPayload(activeAccessToken);
+        } else {
+            isValidAccessToken = false;
+            decodedAccessToken = null;
+
+            if (backendSession.unauthorized) {
+                refreshResponse = refreshResponse ?? NextResponse.next();
+                clearAuthCookiesOnResponse(refreshResponse);
+            }
         }
     }
 
     let userRole = normalizeUserRole(decodedAccessToken?.role as string | undefined);
 
-    if (!userRole && cookieUser?.role) {
+    if (!userRole && cookieUser?.role && isValidAccessToken) {
         userRole = normalizeUserRole(cookieUser.role);
     }
 
     if (!userRole && backendSession?.valid) {
-        userRole = normalizeUserRole(backendSession.user?.role);
-    } else if (!userRole && activeAccessToken && isValidAccessToken) {
-        backendSession ??= await validateSessionFromBackend(
-            request,
-            activeAccessToken,
-        );
         userRole = normalizeUserRole(backendSession.user?.role);
     }
 

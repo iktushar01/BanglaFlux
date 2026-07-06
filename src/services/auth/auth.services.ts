@@ -24,7 +24,10 @@ export async function getNewTokensWithRefreshToken(refreshToken  : string) : Pro
             }
         });
 
-        if(!res.ok){
+        if (!res.ok) {
+            if (res.status === 401) {
+                await clearAuthCookies();
+            }
             return false;
         }
 
