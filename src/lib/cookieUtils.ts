@@ -37,3 +37,12 @@ export const deleteCookie = async (name : string) => {
     const cookieStore = await cookies();
     cookieStore.delete(name);
 };
+
+export const clearAuthCookies = async () => {
+    await Promise.all([
+        deleteCookie("accessToken"),
+        deleteCookie("refreshToken"),
+        deleteCookie("better-auth.session_token"),
+        deleteCookie("user"),
+    ]);
+};

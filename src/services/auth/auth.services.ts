@@ -1,6 +1,7 @@
 "use server";
 
 import { httpClient } from "@/lib/axios/httpClient";
+import { clearAuthCookies } from "@/lib/cookieUtils";
 import { setTokenInCookies } from "@/lib/tokenUtils";
 import { cookies } from "next/headers";
 
@@ -69,6 +70,9 @@ export async function getUserInfo() {
         });
 
         if (!res.ok) {
+            if (res.status === 401) {
+                await clearAuthCookies();
+            }
             console.error("Failed to fetch user info:", res.status, res.statusText);
             return null;
         }

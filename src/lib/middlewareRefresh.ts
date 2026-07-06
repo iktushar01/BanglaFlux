@@ -34,6 +34,19 @@ const getTokenMaxAge = (token: string, fallbackMaxAgeInSeconds: number): number 
     return remainingSeconds > 0 ? remainingSeconds : fallbackMaxAgeInSeconds;
 };
 
+const AUTH_COOKIE_NAMES = [
+    "accessToken",
+    "refreshToken",
+    "better-auth.session_token",
+    "user",
+] as const;
+
+export const clearAuthCookiesOnResponse = (response: NextResponse): void => {
+    for (const name of AUTH_COOKIE_NAMES) {
+        response.cookies.delete(name);
+    }
+};
+
 export const applyAuthCookies = (
     response: NextResponse,
     tokens: RefreshedTokens,
@@ -65,14 +78,19 @@ export const applyAuthCookies = (
     }
 };
 
+export type RefreshTokensResult =
+    | { status: "refreshed"; tokens: RefreshedTokens }
+    | { status: "unauthorized" }
+    | { status: "failed" };
+
 export const refreshTokensFromRequest = async (
     request: NextRequest,
-): Promise<RefreshedTokens | null> => {
+): Promise<RefreshTokensResult> => {
     const refreshToken = request.cookies.get("refreshToken")?.value;
     const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     if (!refreshToken || !baseApiUrl) {
-        return null;
+        return { status: "failed" };
     }
 
     try {
@@ -86,36 +104,42 @@ export const refreshTokensFromRequest = async (
         });
 
         if (!response.ok) {
-            return null;
+            if (response.status === 401) {
+                return { status: "unauthorized" };
+            }
+            return { status: "failed" };
         }
 
         const body = await response.json();
         const { accessToken, refreshToken: newRefreshToken, token } = body.data ?? {};
 
         if (!accessToken || !newRefreshToken) {
-            return null;
+            return { status: "failed" };
         }
 
         return {
-            accessToken,
-            refreshToken: newRefreshToken,
-            sessionToken: token,
+            status: "refreshed",
+            tokens: {
+                accessToken,
+                refreshToken: newRefreshToken,
+                sessionToken: token,
+            },
         };
     } catch (error) {
         console.error("Error refreshing token in middleware:", error);
-        return null;
+        return { status: "failed" };
     }
 };
 
 export const validateSessionFromBackend = async (
     request: NextRequest,
     accessToken?: string,
-): Promise<{ valid: boolean; user: BackendSessionUser | null }> => {
+): Promise<{ valid: boolean; user: BackendSessionUser | null; unauthorized: boolean }> => {
     const token = accessToken ?? request.cookies.get("accessToken")?.value;
     const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     if (!token || !baseApiUrl) {
-        return { valid: false, user: null };
+        return { valid: false, user: null, unauthorized: false };
     }
 
     try {
@@ -129,7 +153,11 @@ export const validateSessionFromBackend = async (
         });
 
         if (!response.ok) {
-            return { valid: false, user: null };
+            return {
+                valid: false,
+                user: null,
+                unauthorized: response.status === 401,
+            };
         }
 
         const body = await response.json();
@@ -137,9 +165,10 @@ export const validateSessionFromBackend = async (
         return {
             valid: true,
             user: (body.data ?? null) as BackendSessionUser | null,
+            unauthorized: false,
         };
     } catch (error) {
         console.error("Error validating session in middleware:", error);
-        return { valid: false, user: null };
+        return { valid: false, user: null, unauthorized: false };
     }
 };

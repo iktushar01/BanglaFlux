@@ -14,6 +14,7 @@ import {
 } from "./lib/middlewareAuth";
 import {
     applyAuthCookies,
+    clearAuthCookiesOnResponse,
     refreshTokensFromRequest,
     validateSessionFromBackend,
 } from "./lib/middlewareRefresh";
