@@ -5,9 +5,10 @@ import { ArrowLeft, ChevronRight, Loader2 } from "lucide-react";
 import { HlsPlayer } from "@/components/modules/iptv/HlsPlayer";
 import { FavoriteButton } from "@/components/modules/iptv/FavoriteButton";
 import { ChannelCard } from "@/components/modules/iptv/ChannelCard";
+import { CategoryRow } from "@/components/modules/iptv/CategoryRow";
 import { useCategoryChannels, useChannel } from "@/hooks/useChannels";
-import { CATEGORY_LABELS, categoryToSlug } from "@/lib/channel/constants";
-import type { Channel } from "@/types/channel.types";
+import { CATEGORY_LABELS, CHANNEL_CATEGORIES, categoryToSlug } from "@/lib/channel/constants";
+import type { Channel, ChannelCategory } from "@/types/channel.types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -60,6 +61,25 @@ function RelatedChannels({ channel }: { channel: Channel }) {
   );
 }
 
+function ExploreCategories({ currentCategory }: { currentCategory: ChannelCategory }) {
+  const otherCategories = CHANNEL_CATEGORIES.filter(
+    (category) => category !== currentCategory,
+  );
+
+  return (
+    <section className="mt-10 space-y-10 border-t border-border pt-8">
+      <h2 className="text-xl font-bold text-foreground md:text-2xl">
+        Explore more categories
+      </h2>
+      <div className="space-y-12">
+        {otherCategories.map((category) => (
+          <CategoryRow key={category} category={category} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function WatchContent({ channel }: { channel: Channel }) {
   return (
     <div className="min-h-screen bg-background pb-16">
@@ -91,6 +111,7 @@ function WatchContent({ channel }: { channel: Channel }) {
         </div>
 
         <RelatedChannels channel={channel} />
+        <ExploreCategories currentCategory={channel.category} />
       </div>
     </div>
   );
